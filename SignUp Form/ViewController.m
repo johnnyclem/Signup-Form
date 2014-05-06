@@ -21,7 +21,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeTextWithNotification:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,9 +36,31 @@
 // password and password confirmation should match
 // password strength checker / valid password
 
+- (void)textFieldDidChangeTextWithNotification:(NSNotification *)note
+{
+    self.signUpButton.enabled = [self passwordsMatch];
+}
+
+- (BOOL)passwordsMatch
+{
+    return [self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text];
+}
+
 - (IBAction)signUp:(id)sender
 {
+    if (![self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
+        NSLog(@"form invalid: passwords don't match");
+    }
+    
     
 }
 
 @end
+
+
+
+
+
+
+
+
